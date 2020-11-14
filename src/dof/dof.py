@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 class DOF(ABC):
-    """Degree of freedom on a site."""
+    """Abstract degree of freedom on a site."""
 
     @property
     @abstractmethod
