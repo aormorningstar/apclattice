@@ -5,10 +5,17 @@ class Gate(ABC):
 
     @abstractmethod
     def __call__(self, lat, i):
-        """Apply the gate to a lattice near a specified site.
+        """Apply the gate to a lattice at a specified location.
 
-        Parameters:
-            lat (Lattice): Lattice to enact local dynamics on.
-            i (int): Index of site of lattice around which gate is applied.
+        :param lat: Lattice to enact local dynamics on.
+        :param i: Index of site of lattice around which gate is applied.
+        """
+        pass
+
+    @abstractmethod
+    def iscompatible(self, lat):
+        """Check if the gate is compatible with a lattice.
+
+        :param lat: The lattice with which to check compatibility.
         """
         pass
