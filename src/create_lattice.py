@@ -34,8 +34,8 @@ class UnitCellFactory:
 
     def _Create1DUnitCell(self, UnitCellParam, UnitCell):
         s = UnitCellParam.cell_scaling
-        a = s*np.array([1.])
-        b = s*np.array([0.5])
+        a = s*np.array([[1.]])
+        b = s*np.array([[0.5]])
         dim = np.size(a,1)
         sites_per_cell = np.size(b,1)
         return UnitCell(dim, a, sites_per_cell, b)
@@ -44,7 +44,7 @@ class UnitCellFactory:
         s = UnitCellParam.cell_scaling
         a = s*np.array([[1.,0.],
                         [0.,1.]])
-        b = s*np.array([0.5,0.5])
+        b = s*np.array([[0.5,0.5]])
         dim = np.size(a,1)
         sites_per_cell = np.size(b,1)
         return UnitCell(dim, a, sites_per_cell, b)
