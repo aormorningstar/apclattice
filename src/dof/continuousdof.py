@@ -23,6 +23,7 @@ class ContinuousDOF(DOF):
 
         :return: Minimum valid value.
         """
+
         return self.__min
 
     @property
@@ -31,12 +32,15 @@ class ContinuousDOF(DOF):
 
         :return: Maximum valid value.
         """
+
         return self.__max
 
     def isvalid(self, val):
         """Is this value valid?"""
+
         return self.min <= val and val <= self.max
 
     def __eq__(self, oth):
         """Compare two DOFs for equivalence."""
+
         return isinstance(oth, ContinuousDOF) and self.min == oth.min and self.max == oth.max

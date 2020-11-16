@@ -10,6 +10,7 @@ class DOF(ABC):
         :param val: Can the degree of freedom take on this value?
         :return: True if val is a valid value. False otherwise.
         """
+
         pass
 
     @abstractmethod
@@ -19,4 +20,5 @@ class DOF(ABC):
         :param oth: The other degree of freedom to compare to.
         :return: True if degrees of freedom are equivalent.
         """
+
         pass

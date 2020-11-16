@@ -10,6 +10,7 @@ class Gate(ABC):
         :param lat: Lattice to enact local dynamics on.
         :param i: Index of site of lattice around which gate is applied.
         """
+
         pass
 
     @abstractmethod
@@ -18,4 +19,5 @@ class Gate(ABC):
 
         :param lat: The lattice with which to check compatibility.
         """
+        
         pass
