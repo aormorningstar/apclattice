@@ -1,7 +1,7 @@
 from .dof import DOF
 
 class DiscreteDOF(DOF):
-    """A degree of freedom that takes on contiguous integer values."""
+    """A degree of freedom that takes on contiguous integer values. A concrete subclass of the abstract class DOF."""
 
     def __init__(self, min, max):
         """Create a degree of freedom with all integers in [min, max].
@@ -14,32 +14,35 @@ class DiscreteDOF(DOF):
 
         iimin = isinstance(min, int)
         iimax = isinstance(max, int)
-        assert iimin and iimax and min < max "Must be integers with min < max."
+        assert iimin and iimax and min < max, "Must be integers with min < max."
 
         self.__min = min
         self.__max = max
 
+    @property
     def min(self):
         """Min value.
 
         :return: Minimum valid value.
-        :rtype: int
         """
+
         return self.__min
 
+    @property
     def max(self):
         """Max value.
 
         :return: Maximum valid value.
-        :rtype: int
         """
+
         return self.__max
 
     def isvalid(self, val):
-        """Is this value valid?
+        """Is this value valid?"""
 
-        :param val: Can the degree of freedom take on this value?
-        :return: True if val is a valid value. False otherwise.
-        :rtype: bool
-        """
-        return isinstance(val, int) and self.__min <= val and val <= self.__max
+        return isinstance(val, int) and self.min <= val and val <= self.max
+
+    def __eq__(self, oth):
+        """Compare two DOFs for equivalence."""
+
+        return isinstance(oth, DiscreteDOF) and self.min == oth.min and self.max == oth.max
