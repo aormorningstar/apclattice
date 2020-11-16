@@ -1,58 +1,70 @@
 # updated: 11-16-2020
+# Honeycomb Unit Cell Class
+# Input:  dof
+# Output: an instance of UnitCell with all the properties filled
 
 import numpy as np
 from .unitcell import UnitCell
 
-# HELP NEEDED
+# Layout of Vectors:
+#
+#        ________
+#       ^    . b[1]
+# a[1] /  . b[0]
+#     /_______>
+#       a[0]
+# 
+# where a[0] is defined to be [1,0]
 
-class HoneycombUnitCell:
-    def __init__(self,uc):      # Is there a way for me to just return a UnitCell object with out passing it in first?
+class HoneycombUnitCell(UnitCell):  # AM I DOING THIS RIGHT?
+    def __init__(self, dof):
         self.__a = [np.array([1.,0.]),np.array([0.5,np.sqrt(3.)/2.])]
         self.__b = [np.array([0.5,np.sqrt(3.)/6.]), np.array([1.,np.sqrt(3.)/3.])]
         self.__dim = len(self.__a)
         self.__spc = len(self.__b)
-        self.__uc = uc(self.__dim, self.__a, self.__spc, self.__b) # Not sure how to create a UnitCell object in this class
+        self.__dof = dof
 
-    def create(self):           # I'm not sure hot to initialize and directly return an object
-        return self.__uc
+# The following are the rest of the unit cell constructions we discussed, including
+# a factory class that turns itself into one type depending on its input.
+# We can 
 
-'''
-class UnitCellFactory:
-    def CreateUnitCell(self, Utype):
-        uc = self._GetUnitCell(Utype)
-        return uc()
-    
-    def _GetUnitCell(self, Utype):
-        if format == '1d':
-            return self._Create1DUnitCell
-        elif format == '2ds':
-            return self._Create2DSquareUnitCell
-        elif format == '2dh':
-            return self._Create2DHoneycomb
-        else:
-            raise ValueError(Utype)
+# Layout of Vectors:
+#
+#        _______
+#       ^       |
+#  a[1] |   . b[0]
+#       |_______>
+#       a[0]
+# 
+# where a[0] is defined to be [1,0]
 
-    def _Create2DHoneycomb(self, UnitCell):
-        s = UnitCellParam.cell_scaling
-        a = s*[np.array([1.,0.]),np.array([0.5,np.sqrt(3.)/2.])]
-        b = s*[np.array([0.5,np.sqrt(3.)/6.]), np.array([1.,np.sqrt(3.)/3.])]
-        dim = len(a)
-        sites_per_cell = len(b)
-        return UnitCell(dim, a, sites_per_cell, b)
+class SquareUnitCell(UnitCell):
+    def __init__(self, dof):
+        self.__a = [np.array([1.,0.]),np.array([0.,1.])]
+        self.__b = [np.array([0.5,0.5])]
+        self.__dim = len(self.__a)
+        self.__spc = len(self.__b)
+        self.__dof = dof
 
-    def _Create1DUnitCell(self, UnitCell):
-        s = UnitCellParam.cell_scaling
-        a = s*[np.array([1.])]
-        b = s*[np.array([0.5])]
-        dim = len(a)
-        sites_per_cell = len(b)
-        return UnitCell(dim, a, sites_per_cell, b)
+# Layout of Vectors:
+#
+#       ____. b[0]
+#       _________>
+#          a[0]
+# 
+# where a[0] is defined to be [1,0]
 
-    def _Create2DSquareUnitCell(self, UnitCell):
-        s = UnitCellParam.cell_scaling
-        a = s*[np.array([1.,0.]),np.array([0.,1.])]
-        b = s*[np.array([0.5,0.5])]
-        dim = len(a)
-        sites_per_cell = len(b)
-        return UnitCell(dim, a, sites_per_cell, b)
-'''
+class LineUnitCell(UnitCell): # 1D unit cell
+    def __init__(self, dof):
+        self.__a = [np.array([1.])]
+        self.__b = [np.array([0.5])]
+        self.__dim = len(self.__a)
+        self.__spc = len(self.__b)
+        self.__dof = dof
+
+class UnitCellFactory(UnitCell):
+    def __init__(self, uctype, dof):
+        if   uctype == '1d':  self = LineUnitCell(dof)
+        elif uctype == '2ds': self = SquareUnitCell(dof)
+        elif uctype == '2dh': self = HoneycombUnitCell(dof)
+        else:                 raise ValueError(uctype)
