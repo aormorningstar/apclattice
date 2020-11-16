@@ -1,12 +1,12 @@
 import numpy as np
-from graph import Graph
+from .graph import Graph
 
 class Lattice(Graph):
     
     # graph_attr is placeholder for parent init method 
-    def __init__(self, adj, vals, unit_cell, L, periodic = False):
+    def __init__(self, adj, vals, uc, L, periodic = False):
         super().__init__(adj, vals)
-        self.unit_cell = unit_cell
+        self.uc = uc # unit cell of lattice
         self.L = L # size of lattice, i.e. number of unit cells
                    # along each dimension
         self.periodic = periodic
@@ -22,7 +22,7 @@ class Lattice(Graph):
 
     @property
     def dof(self):
-        return self.vv
+        return self.uc.dof
 
     # return coordinates (n_0, n_1, ..., n_dim, m) for site with index
     def ind_to_coords(self, index):
@@ -35,7 +35,7 @@ class Lattice(Graph):
     def coords_to_ind(self, coords):
 
         # check valid site within cell
-        if coords[-1] >= self.unit_cell.sites_per_cell:
+        if coords[-1] >= self.uc.spc:
             return None
 
         # check coords are within boundaries
@@ -69,13 +69,13 @@ class Lattice(Graph):
         if not isinstance(site, int):
             site = self.coords_to_ind(site)
         
-        return Graph.get_val(self, site)
+        return super().get_val(site)
             
 
-    def set_val(self, site, new_value):
+    def set_val(self, site, new_val):
 
         # convert to index if given coordinates
         if not isinstance(site, int):
             site = self.coords_to_ind(site)
 
-        Graph.set_val(self, site, new_value)
+        super().set_val(site, new_val)
