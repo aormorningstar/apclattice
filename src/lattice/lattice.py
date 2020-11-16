@@ -1,15 +1,16 @@
 import numpy as np
-import unitcell
+from graph import Graph
 
 class Lattice(Graph):
     
     # graph_attr is placeholder for parent init method 
-    def __init__(self, graph_attr, unit_cell, L, periodic = False):
-        super().__init__(graph_attr)
+    def __init__(self, adj, vals, unit_cell, L, periodic = False):
+        super().__init__(adj, vals)
         self.unit_cell = unit_cell
         self.L = L # size of lattice, i.e. number of unit cells
                    # along each dimension
         self.periodic = periodic
+        self.nsites = len(vals)
 
         # TODO: initailize & store coords-index relationship
         # as tuple : int dictionary, i.e.:
