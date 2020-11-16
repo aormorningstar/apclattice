@@ -1,5 +1,6 @@
 import setuptools
 
+# take the long description from the README
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
