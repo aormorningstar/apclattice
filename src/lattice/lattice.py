@@ -7,14 +7,13 @@ class Lattice(Graph):
     def __init__(self, adj, vals, uc, L, periodic = False):
         super().__init__(adj, vals)
         self.uc = uc # unit cell of lattice
-        self.L = L # size of lattice, i.e. number of unit cells
+        self.L = L # shape of lattice, i.e. number of unit cells
                    # along each dimension
         self.periodic = periodic
         self.nsites = len(vals)
 
-        # TODO: initailize & store coords-index relationship
-        # as tuple : int dictionary, i.e.:
-        # { (n_0, n_1, ..., n_dim, m) : site_index }
+        self.npshape = L.append(self.uc.spc) # shape of np array of indices
+        self.indices = np.arrange(self.nsites).reshape(self.npshape) # coords-index relationship
 
     # returns True if valid index for a site in Lattice
     def __contains__(self, index):
@@ -27,12 +26,16 @@ class Lattice(Graph):
     # return coordinates (n_0, n_1, ..., n_dim, m) for site with index
     def ind_to_coords(self, index):
 
-        # TODO
+        assert isinstance(index, int), "Index must be of type int."
 
-        return (0, 0)
+        result = np.where(self.indices == index)
+
+        return tuple(result[i][0] for i in range(self.indices.ndim))
     
     # return coordinates (n_0, n_1, ..., n_dim, m) for site with index
     def coords_to_ind(self, coords):
+
+        assert isinstance(coords, tuple), "Coords must be of type tuple."
 
         # check valid site within cell
         if coords[-1] >= self.uc.spc:
@@ -47,10 +50,7 @@ class Lattice(Graph):
             else:
                 return None
 
-        # TODO: determine index using { (tuple) : int } dict?
-        index = 0
-
-        return index
+        return self.indices[coords]
 
     # for site at index, return type of site (within unit cell)
     def ind_to_type(self, index):
