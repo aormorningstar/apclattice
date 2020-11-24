@@ -1,7 +1,7 @@
 # updated: 11-15-2020
 
 import numpy as np
-import unitcell
+from .unitcell import UnitCell # modified by AM because it was causing an import error when testing dof
 
 class UnitCellParam:
     def __init__(self, cell_scaling):
@@ -11,7 +11,7 @@ class UnitCellFactory:
     def CreateUnitCell(self, UnitCellParam, Utype):
         uc = self._GetUnitCell(Utype)
         return uc(UnitCellParam)
-    
+
     def _GetUnitCell(self, Utype):
         if format == '1d':
             return self._Create1DUnitCell
