@@ -16,13 +16,15 @@ from .unitcell import UnitCell
 # 
 # where a[0] is defined to be [1,0]
 
-class HoneycombUnitCell(UnitCell):  # AM I DOING THIS RIGHT?
+class HoneycombUnitCell(UnitCell):
     def __init__(self, dof):
-        self.__a = [np.array([1.,0.]),np.array([0.5,np.sqrt(3.)/2.])]
-        self.__b = [np.array([0.5,np.sqrt(3.)/6.]), np.array([1.,np.sqrt(3.)/3.])]
-        self.__dim = len(self.__a)
-        self.__spc = len(self.__b)
-        self.__dof = dof
+        a = [np.array([1., 0.]),
+             np.array([0.5,np.sqrt(3.)/2.])]
+        b = [np.array([0.5,np.sqrt(3.)/6.]),
+             np.array([1., np.sqrt(3.)/3.])]
+        dim = len(a)
+        spc = len(b)
+        super().__init__(dim, a, spc, b, dof)
 
 # The following are the rest of the unit cell constructions we discussed, including
 # a factory class that turns itself into one type depending on its input.
@@ -40,11 +42,12 @@ class HoneycombUnitCell(UnitCell):  # AM I DOING THIS RIGHT?
 
 class SquareUnitCell(UnitCell):
     def __init__(self, dof):
-        self.__a = [np.array([1.,0.]),np.array([0.,1.])]
-        self.__b = [np.array([0.5,0.5])]
-        self.__dim = len(self.__a)
-        self.__spc = len(self.__b)
-        self.__dof = dof
+        a = [np.array([1.,0.]),
+             np.array([0.,1.])]
+        b = [np.array([0.5,0.5])]
+        dim = len(a)
+        spc = len(b)
+        super().__init__(dim, a, spc, b, dof)
 
 # Layout of Vectors:
 #
@@ -56,11 +59,11 @@ class SquareUnitCell(UnitCell):
 
 class LineUnitCell(UnitCell): # 1D unit cell
     def __init__(self, dof):
-        self.__a = [np.array([1.])]
-        self.__b = [np.array([0.5])]
-        self.__dim = len(self.__a)
-        self.__spc = len(self.__b)
-        self.__dof = dof
+        a = [np.array([1.])]
+        b = [np.array([0.5])]
+        dim = len(a)
+        spc = len(b)
+        super().__init__(dim, a, spc, b, dof)
 
 class UnitCellFactory(UnitCell):
     def __init__(self, uctype, dof):
