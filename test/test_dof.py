@@ -9,8 +9,8 @@ class TestDiscreteDOF(TestCase):
         self.dof = DiscreteDOF(self.min, self.max)
 
     def test_discrete_dof_min_max(self):
-        self.assertEquals(self.dof.min, self.min)
-        self.assertEquals(self.dof.max, self.max)
+        self.assertEqual(self.dof.min, self.min)
+        self.assertEqual(self.dof.max, self.max)
 
     def test_discrete_dof_isvalid(self):
         self.assertTrue(self.dof.isvalid(self.max - 1))
@@ -29,8 +29,8 @@ class TestContinuousDOF(TestCase):
         self.dof = ContinuousDOF(self.min, self.max)
 
     def test_continuous_dof_min_max(self):
-        self.assertEquals(self.dof.min, self.min)
-        self.assertEquals(self.dof.max, self.max)
+        self.assertEqual(self.dof.min, self.min)
+        self.assertEqual(self.dof.max, self.max)
 
     def test_continuous_dof_isvalid(self):
         self.assertTrue(self.dof.isvalid(self.max - 0.5))

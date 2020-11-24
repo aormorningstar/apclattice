@@ -1,2 +1,1 @@
-from .test_dof import TestDiscreteDOF
-# from .test import 
+from .test_dof import TestDiscreteDOF, TestContinuousDOF
