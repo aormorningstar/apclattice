@@ -7,7 +7,7 @@ from ..dof import DiscreteDOF
 class HoneycombGate(Gate):
     """A gate that conserves charge and acts on a honeycomb lattice of discrete degrees of freedom.
 
-    Allows charge-conserving transitions on a site and its three neighbors. All possible transitions happen with equal probability.
+    Allows charge-conserving transitions on a site and its three neighbors. All possible transitions happen with equal probability. The gate can only act on lattices with a unit cell that matches the one used to construct the gate.
     """
 
     def __init__(self, uc):
@@ -45,8 +45,7 @@ class HoneycombGate(Gate):
             {}, # case 1
         ]
         # loop over cases
-        for types in self.__types:
-            case = types[0]
+        for case, types in enumerate(self.__types):
             # valid values of the included sites
             vals = [range(uc.dof[t].min, uc.dof[t].max + 1) for t in types]
             # all valid states
@@ -79,6 +78,9 @@ class HoneycombGate(Gate):
 
     def __call__(self, lat, i):
         """Apply the gate to a lattice around a specified site."""
+
+        # TODO: Check lat has a site i. Deal with sites at the edge of the lattice.
+
         # the coords of the central site
         coords = lat.ind_to_coords(i)
         # what case are we dealing with?
