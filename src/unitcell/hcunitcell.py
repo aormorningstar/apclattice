@@ -13,7 +13,7 @@ from .unitcell import UnitCell
 # a[1] /  . b[0]
 #     /_______>
 #       a[0]
-# 
+#
 # where a[0] is defined to be [1,0]
 
 class HoneycombUnitCell(UnitCell):
@@ -24,11 +24,11 @@ class HoneycombUnitCell(UnitCell):
              np.array([1., np.sqrt(3.)/3.])]
         dim = len(a)
         spc = len(b)
-        super().__init__(dim, a, spc, b, dof)
+        super().__init__(a, b, dof)
 
 # The following are the rest of the unit cell constructions we discussed, including
 # a factory class that turns itself into one type depending on its input.
-# We can 
+# We can
 
 # Layout of Vectors:
 #
@@ -37,7 +37,7 @@ class HoneycombUnitCell(UnitCell):
 #  a[1] |   . b[0]
 #       |_______>
 #       a[0]
-# 
+#
 # where a[0] is defined to be [1,0]
 
 class SquareUnitCell(UnitCell):
@@ -47,14 +47,14 @@ class SquareUnitCell(UnitCell):
         b = [np.array([0.5,0.5])]
         dim = len(a)
         spc = len(b)
-        super().__init__(dim, a, spc, b, dof)
+        super().__init__(a, b, dof)
 
 # Layout of Vectors:
 #
 #       ____. b[0]
 #       _________>
 #          a[0]
-# 
+#
 # where a[0] is defined to be [1,0]
 
 class LineUnitCell(UnitCell): # 1D unit cell
@@ -63,7 +63,7 @@ class LineUnitCell(UnitCell): # 1D unit cell
         b = [np.array([0.5])]
         dim = len(a)
         spc = len(b)
-        super().__init__(dim, a, spc, b, dof)
+        super().__init__(a, b, dof)
 
 class UnitCellFactory(UnitCell):
     def __init__(self, uctype, dof):
