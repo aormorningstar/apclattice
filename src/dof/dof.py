@@ -20,3 +20,12 @@ class DOF(ABC):
         :return: True if degrees of freedom are equivalent.
         """
         pass
+
+    @abstractmethod
+    def rand(self, size=None):
+        """Sample random valid value(s).
+
+        :param size: Number of samples. If None then return scalar not an array.
+        :return: Scalar or array of samples.
+        """
+        pass

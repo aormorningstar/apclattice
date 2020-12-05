@@ -1,4 +1,5 @@
 from .dof import DOF
+import numpy.random as rd
 
 class DiscreteDOF(DOF):
     """A degree of freedom that takes on contiguous integer values. A concrete subclass of the abstract class DOF."""
@@ -40,3 +41,7 @@ class DiscreteDOF(DOF):
     def __eq__(self, oth):
         """Compare two DOFs for equivalence."""
         return isinstance(oth, DiscreteDOF) and self.min == oth.min and self.max == oth.max
+
+    def rand(self, size=None):
+        """Sample random valid value(s)."""
+        return rd.choice(range(self.min, self.max+1), size=size)

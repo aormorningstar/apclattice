@@ -1,3 +1,5 @@
+import numpy as np
+
 class UnitCell:
     """A unit cell class."""
 
@@ -10,6 +12,7 @@ class UnitCell:
         """
         self.__a = a # lattice vectors
         self.__b = b # basis vectors
+        self.__dof = dof # degrees of freedom
         self.__dim = len(a) # spatial dimensions
         self.__spc = len(b) # sites per unit cell
         # check for consistency
