@@ -79,11 +79,12 @@ class HoneycombGate(Gate):
     def __call__(self, lat, i):
         """Apply the gate to a lattice around a specified site."""
         # the coords of the central site
-        coords = lat.ind_to_coords(i)
+        coords = np.asarray(lat.ind_to_coords(i))
         # what case are we dealing with?
         case = coords[-1]
+        deltas = self.__deltas[case]
         # indices of all sites involved
-        inds = np.asarray([lat.coords_to_ind(coords + delta) for delta in self.__deltas])
+        inds = np.asarray([lat.coords_to_ind(tuple(coords + delta)) for delta in deltas])
         # total charge of local state
         totalcharge = np.sum(lat.vals[inds])
         # randomly transition to a state with the same charge

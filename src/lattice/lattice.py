@@ -1,5 +1,6 @@
 import numpy as np
 import itertools as it
+import copy as cp
 
 class Lattice:
     """A Bravais lattice in arbitrary dimensions.
@@ -47,58 +48,79 @@ class Lattice:
         """Number of sites in the lattice."""
         return self.__nsites
 
+    def __isind(self, site):
+        """Test if the site is the right form to be an index."""
+        return np.issubdtype(type(site), np.integer)
+
+    def __iscoords(self, site):
+        """Test if the site is the right form to be a coords."""
+        return isinstance(site, tuple) and len(site) == len(self.L) + 1
+
     def __contains__(self, site):
         """Returns True if valid site in Lattice.
 
         :param site: Index or coords specifying a site.
         """
         # site is an index
-        if isinstance(site, int):
-            i = site
-            return 0 <= i < self.nsites
+        if self.__isind(site):
+            return 0 <= site < self.nsites
         # site is a coords
-        elif isinstance(site, tuple) and len(site) == len(self.L) + 1:
-            c = site
-            valid_type = c[-1] < self.uc.spc
+        elif self.__iscoords(site):
+            valid_type = site[-1] < self.uc.spc
             # periodic boundaries
             if self.periodic:
                 return valid_type
             # open boundaries
             else:
-                return np.all(np.less(c[:-1], self.L)) and valid_type
+                return np.all(np.less(site[:-1], self.L)) and valid_type
         # invalid argument
         else:
             raise ValueError('Invalid site specification.')
+
+    def __verify_site(self, site):
+        """Verify the site is in the lattice."""
+        if site not in self:
+            raise ValueError('The site is not valid.')
 
     def ind_to_coords(self, ind):
         """Cartesian coordinates corresponding to a linear index.
 
         :param ind: The linear index. Must be in [0, nsites-1].
         """
+        # check index is valid
+        self.__verify_site(ind)
+        # map to coords
         return self.__i_to_c[ind]
+
+    def __wrap(self, coords):
+        """Use the boundary conditions to wrap the coordinates if the lattice is periodic.
+
+        :param coords: The coordinates.
+        """
+        # wrap around boundary if periodic
+        if self.periodic:
+            coords = tuple(np.append(np.mod(coords[:-1], self.L), coords[-1]))
+        return coords
 
     def coords_to_ind(self, coords):
         """Linear index corresponding to cartesian coords.
 
         :param coords: The coordinates.
         """
-        # coords in the lattice
-        if coords in self:
-            # wrap around boundary if periodic
-            if self.periodic:
-                coords = tuple(np.mod(coords[:-1], self.L))
-            return self.__c_to_i[coords]
-        # coords not in the lattice or invalid
-        else:
-            return None
+        # check coords are valid
+        self.__verify_site(coords)
+        # account for boundaries if periodic
+        coords = self.__wrap(coords)
+        # map to index
+        return self.__c_to_i[coords]
 
-    def ind_to_type(self, index):
+    def ind_to_type(self, ind):
         """For site at index, return type of site (within unit cell).
 
-        :param index: The index of the site.
+        :param ind: The index of the site.
         """
         # convert index to coords
-        coords = self.ind_to_coords(index)
+        coords = self.ind_to_coords(ind)
         # last coordinate is site type
         return coords[-1]
 
@@ -109,7 +131,7 @@ class Lattice:
         :param new_val: New value at that site.
         """
         # convert to index if given coordinates
-        ind = site if isinstance(site, int) else self.coords_to_ind(site)
+        ind = site if self.__isind(site) else self.coords_to_ind(site)
         # getter
         if new_val is None:
             return self.vals[ind]
@@ -128,7 +150,7 @@ class Lattice:
         """
         assert site in self, 'Invalid site.'
         # coords
-        c = self.ind_to_coords(site) if isinstance(site, int) else site
+        c = self.ind_to_coords(site) if self.__isind(site) else site
         # position
         r = np.zeros(self.uc.dim)
         # add lattice vectors
