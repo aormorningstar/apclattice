@@ -120,3 +120,20 @@ class Lattice:
                 self.vals[ind] = new_val
             else:
                 raise ValueError("Can't set that site to that value.")
+
+    def position(self, site):
+        """The absolute position of the site.
+
+        :param site: Index or coords specifying a site.
+        """
+        assert site in self, 'Invalid site.'
+        # coords
+        c = self.ind_to_coords(site) if isinstance(site, int) else site
+        # position
+        r = np.zeros(self.uc.dim)
+        # add lattice vectors
+        for i, ai in enumerate(self.uc.a):
+            r += c[i]*ai
+        # add basis vector
+        r += self.uc.b[c[-1]]
+        return r
