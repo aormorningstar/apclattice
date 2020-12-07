@@ -12,7 +12,7 @@ setuptools.setup(
     description = "A package for simulating stochastic dynamics of lattice systems.",
     long_description = long_description,
     long_description_content_type = "text/markdown",
-    url = "https://github.com/holt-sakai/APC_Lattice",
+    url = "https://github.com/aormorningstar/APC_Lattice",
     package_dir = {'': 'src'},
     packages = setuptools.find_packages(where='src'),
     classifiers = [

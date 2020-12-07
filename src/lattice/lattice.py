@@ -7,41 +7,44 @@ class Lattice:
     Stretches over some number of unit cells in each direction. Holds values associated to each site. Can have periodic or open boundaries.
     """
 
-    def __init__(self, vals, uc, L, periodic=False):
+    def __init__(self, uc, L, vals, periodic=False):
         """Construct the lattice.
 
-        :param vals: A list of values for the sites of the lattice. Must be consistent with the degrees of freedom in the unit cell. Number of values given must also be consistent with number of sites implied by L and uc.
         :param uc: The unit cell.
         :param L: The number of unit cells in each direction of the lattice.
+        :param vals: A list of values for the sites of the lattice. Must be consistent with the degrees of freedom in the unit cell. Number of values given must also be consistent with number of sites implied by L and uc.
         :param periodic: Whether to use periodic boundaries or not.
         """
-        # value at each site
-        self.vals = vals
         # unit cell of lattice
         self.uc = uc
         # number of unit cells in each direction
         self.L = L
+        # check for consistency of spatial dimension
+        assert len(L) == uc.dim, 'Inconsistent spatial dimension. Check L and uc.'
+        # number of sites
+        self.__nsites = np.prod(L)*uc.spc
+        # value at each site
+        self.vals = vals
+        # check consistency
+        assert len(vals) == self.nsites, 'Inconsistent number of sites.'
         # periodic boundaries
         self.__periodic = periodic
-        # number of sites
-        assert len(vals) == np.prod(L)*uc.spc, 'Inconsistent number of sites.'
-        self.__nsites = len(vals)
         # build data for translating between index and coords
         shape = np.append(L, uc.spc)
         inds = np.arange(self.nsites)
         self.__c_to_i = np.reshape(inds, shape)
         self.__i_to_c = list(it.product(*map(range, shape)))
         # check the two maps are inverses
-        assert np.all([i == self.coords_to_ind(self.ind_to_coords(i)) for i in inds]), 'Conversion between ind and coords failed.'
-
-        # TODO: check uc and L are consistent
+        assert np.all([i == self.__c_to_i[self.__i_to_c[i]] for i in inds]), 'Conversion between ind and coords failed.'
 
     @property
     def periodic(self):
+        """Are boundaries periodic?"""
         return self.__periodic
 
     @property
     def nsites(self):
+        """Number of sites in the lattice."""
         return self.__nsites
 
     def __contains__(self, site):
@@ -54,11 +57,11 @@ class Lattice:
             i = site
             return 0 <= i < self.nsites
         # site is a coords
-        elif isinstance(site, tuple) and len(coords) == len(self.L) + 1:
+        elif isinstance(site, tuple) and len(site) == len(self.L) + 1:
             c = site
             valid_type = c[-1] < self.uc.spc
             # periodic boundaries
-            if self.pbc:
+            if self.periodic:
                 return valid_type
             # open boundaries
             else:
@@ -83,8 +86,8 @@ class Lattice:
         if coords in self:
             # wrap around boundary if periodic
             if self.periodic:
-                coords = np.mod(coords[:-1], self.L)
-            return self.indices[coords]
+                coords = tuple(np.mod(coords[:-1], self.L))
+            return self.__c_to_i[coords]
         # coords not in the lattice or invalid
         else:
             return None
@@ -109,11 +112,28 @@ class Lattice:
         ind = site if isinstance(site, int) else self.coords_to_ind(site)
         # getter
         if new_val is None:
-            return self.val[ind]
+            return self.vals[ind]
         # setter
         else:
             type = self.ind_to_type(ind)
             if self.uc.dof[type].isvalid(new_val):
-                self.val[ind] = new_val
+                self.vals[ind] = new_val
             else:
                 raise ValueError("Can't set that site to that value.")
+
+    def position(self, site):
+        """The absolute position of the site.
+
+        :param site: Index or coords specifying a site.
+        """
+        assert site in self, 'Invalid site.'
+        # coords
+        c = self.ind_to_coords(site) if isinstance(site, int) else site
+        # position
+        r = np.zeros(self.uc.dim)
+        # add lattice vectors
+        for i, ai in enumerate(self.uc.a):
+            r += c[i]*ai
+        # add basis vector
+        r += self.uc.b[c[-1]]
+        return r

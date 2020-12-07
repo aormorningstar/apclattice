@@ -38,3 +38,7 @@ class ContinuousDOF(DOF):
     def __eq__(self, oth):
         """Compare two DOFs for equivalence."""
         return isinstance(oth, ContinuousDOF) and self.min == oth.min and self.max == oth.max
+
+    def rand(self, size=None):
+        """Sample random valid value(s)."""
+        return rd.uniform(self.min, self.max, size=size)

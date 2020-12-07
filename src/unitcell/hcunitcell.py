@@ -19,8 +19,8 @@ from .unitcell import UnitCell
 class HoneycombUnitCell(UnitCell):
     def __init__(self, dof):
         a = [np.array([1., 0.]),
-             np.array([0.5,np.sqrt(3.)/2.])]
-        b = [np.array([0.5,np.sqrt(3.)/6.]),
+             np.array([0.5, np.sqrt(3.)/2.])]
+        b = [np.array([0.5, np.sqrt(3.)/6.]),
              np.array([1., np.sqrt(3.)/3.])]
         dim = len(a)
         spc = len(b)

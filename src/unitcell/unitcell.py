@@ -1,3 +1,5 @@
+import numpy as np
+
 class UnitCell:
     """A unit cell class."""
 
@@ -10,6 +12,7 @@ class UnitCell:
         """
         self.__a = a # lattice vectors
         self.__b = b # basis vectors
+        self.__dof = dof # degrees of freedom
         self.__dim = len(a) # spatial dimensions
         self.__spc = len(b) # sites per unit cell
         # check for consistency
@@ -52,15 +55,15 @@ class UnitCell:
         # lattice vectors
         a_check = True
         for a1, a2 in zip(self.a, other.a):
-            a_check *= np.all(a1 == a2)
+            a_check = a_check and np.all(a1 == a2)
         # basis vectors
         b_check = True
         for b1, b2 in zip(self.b, other.b):
-            b_check *= np.all(b1 == b2)
+            b_check = b_check and np.all(b1 == b2)
         # degrees of freedom
         dof_check = True
         for dof1, dof2 in zip(self.dof, other.dof):
-            dof_check *= dof1 == dof2
+            dof_check = dof_check and dof1 == dof2
         return dim_check and spc_check and a_check and b_check and dof_check
 
     def __ne__(self, other):
