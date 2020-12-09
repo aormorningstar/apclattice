@@ -1,9 +1,6 @@
 language: python
 python:
-  - "2.7"
-  - "3.8"
+  - "3.6"
 
-script: 
-  - python -m unittest # I'm pretty sure this is how you do it
-  
-  #- pytest  # Use this line if we're doing pytest instead of unit test
+script:
+  - python -m unittest
