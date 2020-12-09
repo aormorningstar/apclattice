@@ -1,13 +1,16 @@
 from src.unitcell import UnitCell, HoneycombUnitCell, SquareUnitCell, LineUnitCell
+from src.dof import DiscreteDOF
 import numpy as np
 from unittest import TestCase
 
 class TestUnitCell(TestCase):
 
     def setUp(self):
-        self.uchc = HoneycombUnitCell((0,2))
-        self.ucsq = SquareUnitCell((2,))
-        self.ucln = LineUnitCell((2,))
+        dof1 = [DiscreteDOF(0, 1)]
+        dof2 = [DiscreteDOF(0, 1), DiscreteDOF(0, 1)]
+        self.uchc = HoneycombUnitCell(dof2)
+        self.ucsq = SquareUnitCell(dof1)
+        self.ucln = LineUnitCell(dof1)
 
     def test_honeycomb_unit_cell(self):
         self.assertTrue(np.array_equal(self.uchc.a, [np.array([1., 0.]),
