@@ -37,6 +37,10 @@ class Lattice:
         self.__i_to_c = list(it.product(*map(range, shape)))
         # check the two maps are inverses
         assert np.all([i == self.__c_to_i[self.__i_to_c[i]] for i in inds]), 'Conversion between ind and coords failed.'
+        # store absolute positions of all lattice sites
+        self.__positions = np.asarray(
+            [self.__compute_position(i) for i in range(self.nsites)]
+        )
 
     @property
     def periodic(self):
@@ -47,6 +51,11 @@ class Lattice:
     def nsites(self):
         """Number of sites in the lattice."""
         return self.__nsites
+
+    @property
+    def positions(self):
+        """Absolute positions of sites in the lattice."""
+        return self.__positions
 
     def __isind(self, site):
         """Test if the site is the right form to be an index."""
@@ -143,14 +152,11 @@ class Lattice:
             else:
                 raise ValueError("Can't set that site to that value.")
 
-    def position(self, site):
-        """The absolute position of the site.
-
-        :param site: Index or coords specifying a site.
-        """
-        assert site in self, 'Invalid site.'
+    def __compute_position(self, ind):
+        """Compute the absolute position of the site at a given index."""
+        assert ind in self, 'Invalid index.'
         # coords
-        c = self.ind_to_coords(site) if self.__isind(site) else site
+        c = self.ind_to_coords(ind)
         # position
         r = np.zeros(self.uc.dim)
         # add lattice vectors
@@ -159,3 +165,13 @@ class Lattice:
         # add basis vector
         r += self.uc.b[c[-1]]
         return r
+
+    def position(self, site):
+        """The absolute position of the site.
+
+        :param site: Index or coords specifying a site.
+        """
+        assert site in self, 'Invalid site.'
+        # index
+        i = self.coords_to_ind(site) if self.__iscoords(site) else site
+        return self.positions[i]
