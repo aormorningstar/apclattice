@@ -1,11 +1,12 @@
 from src.dof import DiscreteDOF, ContinuousDOF
 from unittest import TestCase
+import numpy as np
 
 class TestDiscreteDOF(TestCase):
 
     def setUp(self):
-        self.min = -1
-        self.max = 1
+        self.min = 0
+        self.max = 2
         self.dof = DiscreteDOF(self.min, self.max)
 
     def test_discrete_dof_min_max(self):
@@ -21,11 +22,19 @@ class TestDiscreteDOF(TestCase):
         oth = DiscreteDOF(self.min, self.max)
         self.assertTrue(self.dof == oth)
 
+    def test_discrete_dof_rand(self):
+        self.assertTrue(self.min <= self.dof.rand() <= self.max)
+        nrand = 10
+        samples = self.dof.rand(nrand)
+        self.assertTrue(
+            np.all(samples <= self.max) and np.all(self.min <= samples)
+        )
+
 class TestContinuousDOF(TestCase):
 
     def setUp(self):
-        self.min = -1
-        self.max = 1
+        self.min = 0
+        self.max = 2
         self.dof = ContinuousDOF(self.min, self.max)
 
     def test_continuous_dof_min_max(self):
@@ -39,3 +48,11 @@ class TestContinuousDOF(TestCase):
     def test_continuous_dof_eq(self):
         oth = ContinuousDOF(self.min, self.max)
         self.assertTrue(self.dof == oth)
+
+    def test_continuous_dof_rand(self):
+        self.assertTrue(self.min <= self.dof.rand() <= self.max)
+        nrand = 10
+        samples = self.dof.rand(nrand)
+        self.assertTrue(
+            np.all(samples <= self.max) and np.all(self.min <= samples)
+        )
