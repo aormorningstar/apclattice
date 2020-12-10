@@ -2,7 +2,7 @@
 
 ## Testing
 
-From the top level of the directory (where `src/` and `test/` are) run
+From the top level of the directory (where `test/` is) run
 
 ```python
 python -m unittest
@@ -14,7 +14,7 @@ to run all tests.
 
 A demo is included at `examples/demo.ipynb`.
 
-## Docs
+## Documentation
 
 From within the `docs/` directory run
 
