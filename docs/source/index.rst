@@ -3,32 +3,36 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to apclattice's documentation!
-**************************************
+Documentation for `apclattice`
+******************************
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-Degrees of freedom
-==================
+`dof`
+=====
 .. automodule:: src.dof
    :members:
+   :inherited-members:
 
-Unit cells
+`unitcell`
 ==========
 .. automodule:: src.unitcell
    :members:
+   :inherited-members:
 
-Lattices
-========
+`lattice`
+=========
 .. automodule:: src.lattice
    :members:
+   :inherited-members:
 
-Gates
-=====
+`gate`
+======
 .. automodule:: src.gate
    :members:
+   :inherited-members:
 
 Indices and tables
 ==================

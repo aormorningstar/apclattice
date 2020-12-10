@@ -1,9 +1,10 @@
 """Unit cells which make up the translated tile of a regular lattice.
 
 Various unit cells are implemented
-    - 2D honeycomb lattice cell
-    - 2D square lattice cell
-    - 1D square lattice cell.
+
+* 2D honeycomb lattice cell
+* 2D square lattice cell
+* 1D square lattice cell.
 """
 
 import numpy as np

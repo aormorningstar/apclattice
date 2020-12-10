@@ -1,7 +1,8 @@
 """Gates for enacting local dynamics on a lattice.
 
 Contains various gates. Currently implemented are
-    - a gate to act on a honeycomb lattice of discrete degrees of freedom.
+
+* a gate to act on a honeycomb lattice of discrete degrees of freedom.
 """
 
 from abc import ABC, abstractmethod
