@@ -6,8 +6,8 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name = "apclattice",
-    version = "0.0.0",
-    author = "Steven Li, Alan Morningstar, Pablo Oyler, and Holt Sakai",
+    version = "0.0.1",
+    author = "Alan Morningstar and Steven Li",
     author_email = "aormorningstar@gmail.com",
     description = "A package for simulating stochastic dynamics of lattice systems.",
     long_description = long_description,
