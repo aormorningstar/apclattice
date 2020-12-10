@@ -1,11 +1,13 @@
+"""A regular lattice with degrees of freedom on each site."""
+
 import numpy as np
 import itertools as it
-import copy as cp
 
 class Lattice:
     """A Bravais lattice in arbitrary dimensions.
 
-    Stretches over some number of unit cells in each direction. Holds values associated to each site. Can have periodic or open boundaries.
+    Stretches over some number of unit cells in each direction. Holds values
+    associated to each site. Can have periodic or open boundaries.
     """
 
     def __init__(self, uc, L, vals, periodic=False):
@@ -13,15 +15,19 @@ class Lattice:
 
         :param uc: The unit cell.
         :param L: The number of unit cells in each direction of the lattice.
-        :param vals: A list of values for the sites of the lattice. Must be consistent with the degrees of freedom in the unit cell. Number of values given must also be consistent with number of sites implied by L and uc.
-        :param periodic: Whether to use periodic boundaries or not.
+        :param vals: A list of values for the sites of the lattice. Must be
+        consistent with the degrees of freedom in the unit cell. Number of
+        values given must also be consistent with number of sites implied by L
+        and uc.
+        :param periodic: Whether to use periodic boundaries or not. Default
+        False.
         """
         # unit cell of lattice
         self.uc = uc
         # number of unit cells in each direction
         self.L = L
         # check for consistency of spatial dimension
-        assert len(L) == uc.dim, 'Inconsistent spatial dimension. Check L and uc.'
+        assert len(L) == uc.dim, 'Inconsistent dimension. Check L and uc.'
         # number of sites
         self.__nsites = np.prod(L)*uc.spc
         # value at each site
@@ -36,7 +42,8 @@ class Lattice:
         self.__c_to_i = np.reshape(inds, shape)
         self.__i_to_c = list(it.product(*map(range, shape)))
         # check the two maps are inverses
-        assert np.all([i == self.__c_to_i[self.__i_to_c[i]] for i in inds]), 'Conversion between ind and coords failed.'
+        check_inv = np.all([i == self.__c_to_i[self.__i_to_c[i]] for i in inds])
+        assert check_inv, 'Conversion between ind and coords failed.'
         # store absolute positions of all lattice sites
         self.__positions = np.asarray(
             [self.__compute_position(i) for i in range(self.nsites)]
@@ -102,7 +109,8 @@ class Lattice:
         return self.__i_to_c[ind]
 
     def __wrap(self, coords):
-        """Use the boundary conditions to wrap the coordinates if the lattice is periodic.
+        """Use the boundary conditions to wrap the coordinates if the lattice
+        is periodic.
 
         :param coords: The coordinates.
         """
