@@ -2,8 +2,9 @@
 
 Contains various degrees of freedom. Currently implemented are degrees of
 freedom that take on
-    - integer values in a finite contiguous interval
-    - real values in a finite contiguous interval.
+
+* integer values in a finite contiguous interval
+* real values in a finite contiguous interval.
 """
 
 from abc import ABC, abstractmethod
