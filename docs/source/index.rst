@@ -13,30 +13,33 @@ Documentation for `apclattice`
 `dof`
 =====
 .. automodule:: src.dof
+   :special-members: __init__, __eq__
    :members:
    :inherited-members:
 
 `unitcell`
 ==========
 .. automodule:: src.unitcell
+   :special-members: __init__, __eq__, __neq__
    :members:
    :inherited-members:
 
 `lattice`
 =========
 .. automodule:: src.lattice
+   :special-members: __init__, __contains__
    :members:
    :inherited-members:
 
 `gate`
 ======
 .. automodule:: src.gate
+   :special-members: __init__, __call__
    :members:
    :inherited-members:
 
 Indices and tables
 ==================
-
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`

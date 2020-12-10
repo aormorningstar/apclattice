@@ -22,10 +22,9 @@ From within the `docs/` directory run
 
 ```shell
 make html
-make latex
 ```
 
-to build the docs.
+to build the docs in html format. They are then located at `docs/build/html/index.html`.
 
 ## TODO
 * more tests

@@ -15,12 +15,8 @@ class Lattice:
 
         :param uc: The unit cell.
         :param L: The number of unit cells in each direction of the lattice.
-        :param vals: A list of values for the sites of the lattice. Must be
-        consistent with the degrees of freedom in the unit cell. Number of
-        values given must also be consistent with number of sites implied by L
-        and uc.
-        :param periodic: Whether to use periodic boundaries or not. Default
-        False.
+        :param vals: A list of values for the sites of the lattice. Must be consistent with the degrees of freedom in the unit cell. Number of values given must also be consistent with number of sites implied by L and uc.
+        :param periodic: Whether to use periodic boundaries or not. Default False.
         """
         # unit cell of lattice
         self.uc = uc
