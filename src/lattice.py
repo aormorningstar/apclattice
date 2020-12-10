@@ -10,13 +10,13 @@ class Lattice:
     associated to each site. Can have periodic or open boundaries.
     """
 
-    def __init__(self, uc, L, vals, periodic=False):
+    def __init__(self, uc, L, vals, periodic=True):
         """Construct the lattice.
 
         :param uc: The unit cell.
         :param L: The number of unit cells in each direction of the lattice.
         :param vals: A list of values for the sites of the lattice. Must be consistent with the degrees of freedom in the unit cell. Number of values given must also be consistent with number of sites implied by L and uc.
-        :param periodic: Whether to use periodic boundaries or not. Default False.
+        :param periodic: Whether to use periodic boundaries or not. Default True.
         """
         # unit cell of lattice
         self.uc = uc
@@ -37,9 +37,6 @@ class Lattice:
         inds = np.arange(self.nsites)
         self.__c_to_i = np.reshape(inds, shape)
         self.__i_to_c = list(it.product(*map(range, shape)))
-        # check the two maps are inverses
-        check_inv = np.all([i == self.__c_to_i[self.__i_to_c[i]] for i in inds])
-        assert check_inv, 'Conversion between ind and coords failed.'
         # store absolute positions of all lattice sites
         self.__positions = np.asarray(
             [self.__compute_position(i) for i in range(self.nsites)]
