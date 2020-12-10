@@ -14,6 +14,17 @@ to run all tests.
 
 A demo is included at `examples/demo.ipynb`.
 
+## Docs
+
+From within the `docs/` directory run
+
+```shell
+make html
+make latex
+```
+
+to build the docs.
+
 ## Authors
 
-Alan Morningstar and Steven Li (x-Pablo Oyler, and x-Holt Sakai) as a final project for the APC 524 (Fall 2020) class at Princeton University.
+Alan Morningstar and Steven Li as a final project for the APC 524 (Fall 2020) class at Princeton University. Early contributions by Pablo Oyler and Holt Sakai.
