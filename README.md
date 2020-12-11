@@ -18,6 +18,10 @@ to run all tests.
 
 A demo is included at `examples/demo.ipynb`.
 
+## Profiling
+
+Profiling in performed in `profiling.ipynb`.
+
 ## Documentation
 
 From within the `docs/` directory run

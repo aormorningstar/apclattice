@@ -56,6 +56,8 @@ We found that testing was easier to keep up with for the simpler pieces of code 
 
 Continuous integration (CI) was done using the Travis framework. Our test suite is run each time we commit to the repository.
 
+Profiling was completed using IPython's magic commands $\texttt{\%timeit}$, $\texttt{\%lprun}$, and $\texttt{\%mprun}$. By timing the $\texttt{\%dynamics}$ function calls with differing $\texttt{\%dt}$ input, the result came out to be just over 300 ms per $\texttt{\%dt}$ per site. This result is sufficient for the purposes of perfroming simulations.
+
 Documentation was generated using Sphinx's autodoc feature. We followed the reStructured text format for our docstrings, which allowed for full automatic documentation. Instructions for building the docs are in the README of the project repository.
 
 \section{Outlook}
