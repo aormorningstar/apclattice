@@ -1,6 +1,6 @@
 # apclattice
 
-A final project for APC 524 at Princeton University. 
+A final project for APC 524 at Princeton University.
 
 A framework for stochastic dynamics of degrees of freedom on a Bravais lattice. Dynamics are enacted by `Gate` objects acting on the degrees of freedom (`DOF`) of a `Lattice` near a specified location. An implemented example is the honeycomb lattice in two dimensions with a discrete, finite number of particles per site and charge-conserving local dynamics (see demo below).
 
@@ -29,6 +29,16 @@ make latexpdf
 ```
 
 to build the docs in html and pdf format. They are then located at `docs/build/html/index.html` and `docs/build/latex/apclattice.pdf`.
+
+## Report
+
+LaTeX source for the final report is included in `report/`. From that directory run
+
+```shell
+pdflatex report.tex
+```
+
+to build a pdf of the report.
 
 ## Authors
 
