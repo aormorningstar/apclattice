@@ -2,6 +2,13 @@
 \usepackage{graphicx}
 \usepackage{amsfonts}
 \usepackage{tabularx}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+}
 
 \title{APC 524 Final Project Report}
 \author{Alan Morningstar and Steven Li}
@@ -15,7 +22,7 @@
 
 Systems of interacting degrees of freedom on a regular lattice arise naturally in crystalline solids. At low temperatures, the quantum mechanical nature of these systems can result in an effective finite density (in space) of accessible states, meaning that there are a finite number of states on each site in a good description of the system. As a result, lattice models with a finite number of states per site (perhaps a particle occupancy $\in [0, n_\mathrm{max}]$) are common in physics. Even models with no quantum mechanics involved can still be relevant, ex: the Ising model.
 
-In this project we developed a Python software package $\texttt{apclattice}$ to simulate regular lattice systems with degrees of freedom on each site. The dynamics are enacted by applying ``gates" locally on the lattice. Alongside the source code we provide a suite of tests to verify and maintain much of the functionality of the source code, an automatic documentation system, and a demo simulation.
+In this project (see \url{http://www.github.com/aormorningstar/apclattice}) we developed a Python software package $\texttt{apclattice}$ to simulate regular lattice systems with degrees of freedom on each site. The dynamics are enacted by applying ``gates" locally on the lattice. Alongside the source code we provide a suite of tests to verify and maintain much of the functionality of the source code, an automatic documentation system, and a demo simulation.
 
 \section{Overview of the software}
 There are four submodules:
@@ -25,27 +32,33 @@ There are four submodules:
     \item $\texttt{apclattice.lattice}$\\
     \item $\texttt{apclattice.gate}$.
 \end{itemize}
-The $\texttt{dof}$ module provides degrees of freedom that ``live" on lattice sites of the system. The values that these degrees of freedom take on change during the dynamics. The $\texttt{unitcell}$ module gives us unit cells: the basic repeating element of the lattice that is used as a tile to cover space. The $\texttt{lattice}$ module provides an object representing the full lattice of the system, which extends over a finite region in space. Finally, the $\texttt{gate}$ module sets up the framework, and one example, for endowing the system with local dynamics by applying gates to update degrees of freedom on the lattice. This defines time evolution in the system.
+The $\texttt{dof}$ module provides degrees of freedom that ``live" on lattice sites of the system. The values that these degrees of freedom take on change during the dynamics (when gates are applied to the system). The $\texttt{unitcell}$ module gives us unit cells: the basic repeating element of the lattice that is used as a tile to cover space. The $\texttt{lattice}$ module provides an object representing the full lattice of the system, which extends over a finite region in space. Finally, the $\texttt{gate}$ module sets up the framework, and one example, for endowing the system with local dynamics by applying gates to update degrees of freedom on the lattice. This defines time evolution in the system.
 
 \subsection{Degree of freedom ($\texttt{apclattice.dof}$)}
-Here we will explain some of the design choices in the $\texttt{dof}$ module.
+In the $\texttt{dof}$ module we have implemented two common (in statistical physics models) types of degrees of freedom for lattice sites: discrete and continuous contiguous degrees of freedom. They are implemented as concrete subclasses of the abstract base class $\texttt{DOF}$. The $\texttt{DiscreteDOF}$ class takes on integers $\in [i_\mathrm{min}, i_\mathrm{max}]$, which is useful in, for example, the description of systems where the number of particles on a site is bounded. We also implemented a $\texttt{ContinuousDOF}$ class that takes on real values $\in [r_\mathrm{min}, r_\mathrm{max}]$. This could be useful in describing, for example, the ``XY"" model, where there is an angle $\theta_i \in [0, 2 \pi]$ of an arrow on each site $i$ of a two-dimensional (2D) lattice.
 
 \subsection{Unit cell ($\texttt{apclattice.unitcell}$)}
-Here we will explain some of the design choices in the $\texttt{unitcell}$ module.
+In the $\texttt{unitcell}$ module we've implemented the class $\texttt{UnitCell}$, representing the basic repeating unit of a lattice, and subclasses $\texttt{HoneycombUnitCell}$, $\texttt{SquareUnitCell}$, and $\texttt{LineUnitCell}$. The latter three represent the unit cells with which the standard versions of the 2D honeycomb lattice, 2D square lattice, or 1D square lattice can be built. A unit cell is specified by a set of ``lattice vectors" $\vec{a}_i$, for $i\in [0, D-1]$ where $D$ is the spatial dimension, and a set of ``basis vectors" $\vec{b}_i$, for $i \in [0, S-1]$ where $S$ is the number of sites per unit cell. Lattice vectors are the translation vectors for building up the lattice using unit cell ``tiles", and basis vectors are the locations of sites within a unit cell. These sets of vectors are stored as lists of $\texttt{numpy.array}$ objects within the $\texttt{UnitCell}$. A $\texttt{UnitCell}$ also stores a list of $\texttt{DOF}$ objects that specify the degrees of freedom on each lattice site within the unit cell.
 
 \subsection{Lattice ($\texttt{apclattice.lattice}$)}
-Here we will explain some of the design choices in the $\texttt{dof}$ module.
+In the $\texttt{lattice}$ module we provide the $\texttt{Lattice}$ class. This object contains a $\texttt{UnitCell}$ and information on how many times that unit cell is translated in each spatial direction to make up the lattice. It also has the option of periodic or open boundaries, and it stores the state that each site's degree of freedom is in, which gets updated when the lattice is ``time evolved". Much of the functionality of the $\texttt{Lattice}$ is to be able to conveniently query the data describing the lattice, such as the absolute position of each site of the lattice, or the map between the $\texttt{ind}$ of a site (an integer index $\in [0, n_s-1]$ where $n_s$ is the total number of sites in the lattice) and the $\texttt{coords}$ of a site (a tuple giving the cartesian coordinates of the particular unit cell in the lattice that the site lives in and which site in that unit cell is the one). This is an $O(n_s)$ amount of data, so it is generated when a $\texttt{Lattice}$ is initialized and stored for lookup, instead of calculating it ``on the fly" as needed.
 
 \subsection{Gate ($\texttt{apclattice.gate}$)}
-Here we will explain some of the design choices in the $\texttt{gate}$ module.
+In the $\texttt{gate}$ module we introduce the $\texttt{Gate}$ abstract base class and subclass it with the example of the $\texttt{HoneycombGate}$ class, which enacts charge-conserving dynamics on lattices that are built up from the $\texttt{HoneycombUnitCell}$ with discrete degrees of freedom. (Think of some fixed number of particles on a lattice, and the particles hop around locally. See demo at $\texttt{examples/demo.ipynb}$.) The way you apply a $\texttt{Gate}$ to a $\texttt{Lattice}$ is via the call ``dunder" method. If you have a $\texttt{Gate}$ $\texttt{g}$ and a $\texttt{Lattice}$ $\texttt{lat}$, then calling $\texttt{g(lat, i)}$ will apply the gate to the lattice at site $\texttt{i}$ (and whatever nearby sites are involved in the gate).
 
 \section{Demonstration}
-Here we will describe the demo $\texttt{examples/demo.ipynb}$.
+We provide a demonstration notebook in the examples directory. In the demo we set up a honeycomb lattice in which $0$ or $1$ particle can exist on each site. We first set up the empty lattice (no particles) and plot the structure of the lattice to visualize it. We then go on to fill half of the sites that are closest to the central site, and we run the dynamics, applying charge-conserving gates at random locations in the lattice. Plotting throughout the time evolution allows us to see the initial blob of charge diffuse into the rest of the system, and at long times the system approaches an equilibrium where we can no longer tell where the initial blob of charge was placed. Please see that demonstration.
 
 \section{The development process}
-Here we will provide details of the development experience.
+To develop this project we, at first, worked on seperate submodules of the code so that little coordination was needed. We designed rough ideas of interfaces, and made suggestions to eachother for modifications as we worked on our own submodules. We used git and github pull requests to push chunks of completed code to a development branch of the project. After a skeleton of the code was completed, we found that it was often useful to block of periods of time where only one of us would review and edit the entire code, and make a pull request to incorporate those changes.
 
-\section{Summary and outlook}
-Summary and any ideas for extensions, improvements.
+We found that testing was easier to keep up with for the simpler pieces of code like the $\texttt{dof}$ module. Once we got into the more complex submodules like $\texttt{gate}$ that interact with and rely on the other submodules, unit testing became a bit more challenging, because we weren't sure if we were breaking down the tests into proper atomic pieces.
+
+Continuous integration (CI) was done using the Travis framework. Our test suite is run each time we commit to the repository.
+
+Documentation was generated using Sphinx's autodoc feature. We followed the reStructured text format for our docstrings, which allowed for full automatic documentation. Instructions for building the docs are in the README of the project repository.
+
+\section{Outlook}
+At this point the code is not performant, so it could use some effort in optimization. We could also build a simulation module that allows a user to more easily run simulations. A starting point for this is the code in our demonstration. Testing is also somewhat incomplete. It could be broken down more atomistically, and the tests are not well-explained or documented at the moment.
 
 \end{document}
