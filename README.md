@@ -16,11 +16,7 @@ to run all tests.
 
 ## Demo
 
-A demo is included at `examples/demo.ipynb`.
-
-## Profiling
-
-Profiling in performed in `profiling.ipynb`.
+A demo is included at `examples/demo.ipynb`. A bit of profiling is done at the end of the demo.
 
 ## Documentation
 
