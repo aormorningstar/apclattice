@@ -2,7 +2,6 @@
 \usepackage{graphicx}
 \usepackage{amsfonts}
 \usepackage{tabularx}
-\usepackage{pythonhighlight}
 
 \title{APC 524 Final Project Report}
 \author{Alan Morningstar and Steven Li}
@@ -13,6 +12,40 @@
 \maketitle
 
 \section{Introduction}
-Here is the intro.
+
+Systems of interacting degrees of freedom on a regular lattice arise naturally in crystalline solids. At low temperatures, the quantum mechanical nature of these systems can result in an effective finite density (in space) of accessible states, meaning that there are a finite number of states on each site in a good description of the system. As a result, lattice models with a finite number of states per site (perhaps a particle occupancy $\in [0, n_\mathrm{max}]$) are common in physics. Even models with no quantum mechanics involved can still be relevant, ex: the Ising model.
+
+In this project we developed a Python software package $\texttt{apclattice}$ to simulate regular lattice systems with degrees of freedom on each site. The dynamics are enacted by applying ``gates" locally on the lattice. Alongside the source code we provide a suite of tests to verify and maintain much of the functionality of the source code, an automatic documentation system, and a demo simulation.
+
+\section{Overview of the software}
+There are four submodules:
+\begin{itemize}
+    \item $\texttt{apclattice.dof}$\\
+    \item $\texttt{apclattice.unitcell}$\\
+    \item $\texttt{apclattice.lattice}$\\
+    \item $\texttt{apclattice.gate}$.
+\end{itemize}
+The $\texttt{dof}$ module provides degrees of freedom that ``live" on lattice sites of the system. The values that these degrees of freedom take on change during the dynamics. The $\texttt{unitcell}$ module gives us unit cells: the basic repeating element of the lattice that is used as a tile to cover space. The $\texttt{lattice}$ module provides an object representing the full lattice of the system, which extends over a finite region in space. Finally, the $\texttt{gate}$ module sets up the framework, and one example, for endowing the system with local dynamics by applying gates to update degrees of freedom on the lattice. This defines time evolution in the system.
+
+\subsection{Degree of freedom ($\texttt{apclattice.dof}$)}
+Here we will explain some of the design choices in the $\texttt{dof}$ module.
+
+\subsection{Unit cell ($\texttt{apclattice.unitcell}$)}
+Here we will explain some of the design choices in the $\texttt{unitcell}$ module.
+
+\subsection{Lattice ($\texttt{apclattice.lattice}$)}
+Here we will explain some of the design choices in the $\texttt{dof}$ module.
+
+\subsection{Gate ($\texttt{apclattice.gate}$)}
+Here we will explain some of the design choices in the $\texttt{gate}$ module.
+
+\section{Demonstration}
+Here we will describe the demo $\texttt{examples/demo.ipynb}$.
+
+\section{The development process}
+Here we will provide details of the development experience.
+
+\section{Summary and outlook}
+Summary and any ideas for extensions, improvements.
 
 \end{document}
