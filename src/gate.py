@@ -111,7 +111,7 @@ class HoneycombGate(Gate):
         :param charge: Total charge of the sites involved.
         """
         states = self.__secs[case][charge]
-        return states[np.random.choice(len(states)), :]
+        return states[np.random.randint(len(states)), :]
 
     def __call__(self, lat, i):
         """Apply the gate to a lattice around a specified site."""
