@@ -29,13 +29,16 @@ In this project (see Git repo \href{http://www.github.com/aormorningstar/apclatt
 
 \section{Overview of the software}
 There are four submodules:
+
 \begin{itemize}
     \item $\texttt{apclattice.dof}$
     \item $\texttt{apclattice.unitcell}$
     \item $\texttt{apclattice.lattice}$
     \item $\texttt{apclattice.gate}$.
 \end{itemize}
+
 The $\texttt{dof}$ module provides degrees of freedom that ``live" on lattice sites of the system. The values that these degrees of freedom take on change during the dynamics (when gates are applied to the system). The $\texttt{unitcell}$ module gives us unit cells: the basic repeating element of the lattice that is used as a tile to cover space. The $\texttt{lattice}$ module provides an object representing the full lattice of the system, which extends over a finite region in space. Finally, the $\texttt{gate}$ module sets up the framework, and one example, for endowing the system with local dynamics by applying gates to update degrees of freedom on the lattice. This defines time evolution in the system.  An early draft of our structure can be seen in the UML diagram of Fig.~\ref{fig:uml}.
+
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1\textwidth]{APC524_FinalProject_UML.png}
@@ -91,20 +94,22 @@ We provide a demonstration notebook in the examples directory. In the demo we se
         \label{fig:output}
 \end{figure}
 
-\section{The development process}
+\section{Development process}
 To develop this project we, at first, worked on separate submodules of the code so that little coordination was needed. We designed rough ideas of interfaces, and made suggestions to each other for modifications as we worked on our own submodules. We used git and GitHub pull requests to push chunks of completed code to a development branch of the project. After a skeleton of the code was completed, we found that it was often useful to block of periods of time where only one of us would review and edit the entire code, and make a pull request to incorporate those changes.
 
-We found that testing was easier to keep up with for the simpler pieces of code like the $\texttt{dof}$ module. Once we got into the more complex submodules like $\texttt{gate}$ that interact with and rely on the other submodules, unit testing became a bit more challenging, because we weren't sure if we were breaking down the tests into proper atomic pieces.
+We found that testing was easier to keep up with for the simpler pieces of code like the $\texttt{dof}$ module. Once we got into the more complex submodules like $\texttt{gate}$ that interact with and rely on the other submodules, unit testing became a bit more challenging, because we were unsure if we should be breaking down the tests into proper atomic pieces.
 
 \subsection{Workflow}
 Near the beginning of the project, a significant amount of time was spent on choosing and learning a git workflow.  The one we chose can be best described by Fig.~\ref{fig:wf} below.  
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\textwidth]{index.png}
-    \caption{Our workflow is very similar to a workflow described by David Bernholdt as presented in class.}
+    \caption{Our workflow is very similar to this workflow diagram by David Bernholdt as presented in class.}
     \label{fig:wf}
 \end{figure}
-Each user works on their own branch.  At any given time the team decides on who will be working on which file so that no two people are working on the same file at the same time.  There is a development branch named $\texttt{dev}$ that they will send pull requests to but individually, they each work on their own branch with commits until they have completed the task they want to do for the file they are working on.  From that point, the instruction is as the following:
+
+Each user works on their own branch.  At any given time the team decides on who will be working on which file so that no two people are working on the same file at the same time.  There is a development branch named $\texttt{dev}$ that they send pull requests to but individually, they each work on their own branch with commits until they have completed the task they want to do for the file they are working on.  From that point, the instruction is as followings:
+
 \begin{enumerate}
     \item From their feature branch, run $\texttt{git push origin their\_feature}$.
     \item Run $\texttt{git checkout dev}$.
@@ -117,7 +122,7 @@ Each user works on their own branch.  At any given time the team decides on who 
 
 \subsubsection{Pull request}
 \label{sec:pr}
-After the pull request is made on the individual computer, one of the team members (which has soon devolved to oneself) manages the pull request on GitHub.  GitHub checks for merge conflict (later then augmented by Travis CI for running tests, as described in Sec~\ref{sec:ci}) and if all goes well, the pull request will be confirmed then merged to $\texttt{dev}$.  On the local machine, $\texttt{dev}$ is pulled then merged to the individual member's feature branch.  Luckily, no merge conflict was encountered during the entire process due to the small number of team members and deciding from the beginning that no two people will be working on the same file at the same time.
+After the pull request is made on the individual computer, one of the team members (which has soon devolved to oneself) manages the pull request on GitHub.  GitHub checks for merge conflict (later then augmented by Travis CI for running tests, as described in Sec.~\ref{sec:ci}) and if all goes well, the pull request will be confirmed then merged to $\texttt{dev}$.  On the local machine, $\texttt{dev}$ is pulled then merged to the individual member's feature branch.  Luckily, no merge conflict was encountered during the entire process due to the small number of team members and deciding from the beginning that no two people will be working on the same file at the same time.
 
 \subsubsection{Major revisions}
 There were three major revisions to the high-level structuring of the code.  The first was organizing files into a more organized folder structure.  This was completed live with everyone on Zoom so that everyone was able to get their branches onto $\texttt{dev}$.  The second major revision was the migration of the entire GitHub repository from Holt's account to Alan's account.  This process involved the finalization of the files created by Holt (then later Pablo) to make sure compatibility is still maintained.  Some restructuring of how classes are distributed between files are made.  Lastly, classes were combined to fewer files to improve the readability of the structure, which, in retrospect, have deviated from the intentions of the course to create a sustainable package that is amenable to future development.
